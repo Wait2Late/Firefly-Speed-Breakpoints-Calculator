@@ -199,7 +199,7 @@
       gap: 8px;
       align-items: stretch;
       background: linear-gradient(120deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
-      padding: 10px 10px 2px 10px; /* top, right, bottom (tighter), left */
+      padding: 10px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.06);
     }
@@ -319,26 +319,6 @@
       text-shadow: none;
       font-weight: normal;
     } 
-    /* Compact gradient selects for DDD proc/rank rows */
-    .ddd-proc-select {
-      appearance: none;
-      background: linear-gradient(135deg, var(--control), var(--control-strong));
-      border: 1px solid var(--control-border);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
-      color: var(--text);
-      height: 24px;
-      line-height: 24px;
-      padding: 0px 8px;
-    }
-    /* Match gradient/button styling for DDD distribution selects */
-    .ddd-dist-select {
-      appearance: none;
-      background: linear-gradient(135deg, var(--control), var(--control-strong));
-      border: 1px solid var(--control-border);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
-      color: var(--text);
-      padding: 0px 8px;
-    }
     .toggle-inline {
       flex: 1 1 100%;
       display: flex;
@@ -347,7 +327,7 @@
       align-items: center;
     }
     .mini-panel {
-      padding: 6px;
+      padding: 8px;
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.12);
       background: linear-gradient(120deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
@@ -356,14 +336,9 @@
       display: grid;
       grid-template-columns: 1.2fr 0.8fr;
       grid-template-rows: auto 1fr;
-      gap: 5px;
+      gap: 10px;
       align-items: stretch;
       position: relative;
-    }
-    /* Tighten vertical gap around the DDD mini-panel without changing its internal padding */
-    .control-group.ddd-group .mini-panel {
-      margin-top: -6px;
-      margin-bottom: -6px;
     }
     .mini-panel-header {
       font-weight: 500;
@@ -387,36 +362,31 @@
       line-height: 24px;
       width: 100%;
     }
-    #dddModeSelect,
-    #dddModeSelectModalProcs,
-    #dddModeSelectModalOverride {
-      height: 24px;
-      line-height: 24px;
-    }
     .e5-group select { width: 100%; }
     .phainon-select { width: 90px; height: 32px; }
     .ddd-adv {
       border: 1px solid var(--control-border);
       border-radius: 10px;
-      min-height: 48px;
+      min-height: 64px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: flex-start;
       font-size: 0.85rem;
       color: var(--text);
       text-align: center;
-      padding: 4px;
-      gap: 4px;
+      padding: 6px;
+      gap: 6px;
       background: linear-gradient(135deg, var(--control), var(--control-strong));
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
       cursor: pointer;
       transition: border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
-      align-self: end;
+      align-self: stretch;
+      justify-content: center;
       width: 120px;
       grid-column: 2;
-      grid-row: 2;
-      height: auto;
+      grid-row: 1 / span 2;
+      height: 100%;
     }
     .ddd-adv:hover {
       border-color: var(--accent);
@@ -895,7 +865,7 @@
               <div class="mini-panel-header buff-title">DDD Proc's Per Ult</div>
               <div class="ddd-row">
                 <div class="ddd-column">
-                  <select id="dddSelect" class="ddd-proc-select" data-visible-rows="6">
+                  <select id="dddSelect" data-visible-rows="6">
                     <option value="0">0 DDD Proc's</option>
                     <option value="1">1 DDD Proc</option>
                     <option value="2">2 DDD Proc's</option>
@@ -913,7 +883,7 @@
                     <option value="14">14 DDD Proc's</option>
                     <option value="15">15 DDD Proc's</option>
                   </select>
-                  <select id="dddRankSelect" class="ddd-proc-select" data-visible-rows="6">
+                  <select id="dddRankSelect" data-visible-rows="6">
                     <option value="1">S1</option>
                     <option value="2">S2</option>
                     <option value="3">S3</option>
@@ -921,10 +891,6 @@
                     <option value="5" selected>S5</option>
                   </select>
                 </div>
-                <select id="dddModeSelect" class="ddd-dist-select" data-visible-rows="2" style="grid-column: 2; grid-row: 1;">
-                  <option value="frontloaded">Frontloaded</option>
-                  <option value="average" selected>Average</option>
-                </select>
                 <button class="ddd-adv" id="dddSettingsBtn" type="button" onclick="openDddModal()">
                   <span class="ddd-adv-line">Advanced DDD</span>
                   <span class="ddd-adv-line">Settings <span class="ddd-gear">&#9881;</span></span>
@@ -1070,18 +1036,18 @@
       </div>
 
       <div class="modal-sections">
-            <div class="modal-section" data-mode="procs">
-              <div class="modal-section-header">
-                <label class="modal-radio">
-                  <input type="radio" name="dddMode" value="procs" checked />
-                  
-                </label>
-                <span class="modal-section-sub"></span>
-              </div>
-              <div class="modal-control-row">
-                <div style="display:flex; align-items:center; gap:6px; width:auto;">
-                  <label for="dddSelectModal" style="margin:0;">DDD Proc's Per Ult</label>
-                  <select id="dddSelectModal" class="ddd-proc-select" style="width: 140px;">
+        <div class="modal-section" data-mode="procs">
+          <div class="modal-section-header">
+            <label class="modal-radio">
+              <input type="radio" name="dddMode" value="procs" checked />
+              
+            </label>
+            <span class="modal-section-sub"></span>
+          </div>
+          <div class="modal-control-row">
+            <div style="display:flex; align-items:center; gap:6px; width:auto;">
+              <label for="dddSelectModal" style="margin:0;">DDD Proc's Per Ult</label>
+              <select id="dddSelectModal" style="width: 140px;">
                 <option value="0">0 DDD Proc's</option>
                 <option value="1">1 DDD Proc's</option>
                 <option value="2">2 DDD Proc's</option>
@@ -1101,45 +1067,31 @@
               </select>
             </div>
             <div style="display:flex; align-items:center; gap:6px; width:auto;">
-                  <label for="dddRankSelectModal" style="margin:0;">DDD Superimposition</label>
-                  <select id="dddRankSelectModal" class="ddd-proc-select" style="width: 110px;">
-                    <option value="1">S1</option>
-                    <option value="2">S2</option>
-                    <option value="3">S3</option>
-                    <option value="4">S4</option>
-                    <option value="5" selected>S5</option>
-                  </select>
-                </div>
-                <div style="display:flex; align-items:center; gap:6px; width:auto;">
-                  <label for="dddModeSelectModalProcs" style="margin:0;">How to apply DDD procs</label>
-                  <select id="dddModeSelectModalProcs" class="ddd-dist-select" style="width: 140px;">
-                    <option value="frontloaded">Frontloaded</option>
-                    <option value="average" selected>Average</option>
-                  </select>
-                </div>
-              </div>
+              <label for="dddRankSelectModal" style="margin:0;">DDD Superimposition</label>
+              <select id="dddRankSelectModal" style="width: 110px;">
+                <option value="1">S1</option>
+                <option value="2">S2</option>
+                <option value="3">S3</option>
+                <option value="4">S4</option>
+                <option value="5" selected>S5</option>
+              </select>
             </div>
+          </div>
+        </div>
 
-            <div class="modal-section" data-mode="override">
-              <div class="modal-section-header">
-                <label class="modal-radio">
-                  <input type="radio" name="dddMode" value="override" />
-                  
-                </label>
-                <span class="modal-section-sub"></span>
-              </div>
-              <div class="modal-control-row">
-                <label for="dddOverrideInput" style="margin:0;">Exact AA% Per Ult</label>
-                <input id="dddOverrideInput" type="number" min="0" step="1" value="0" style="width: 100px;" />
-                <div style="display:flex; align-items:center; gap:6px; width:auto;">
-                  <label for="dddModeSelectModalOverride" style="margin:0;">How to apply DDD procs</label>
-                  <select id="dddModeSelectModalOverride" class="ddd-dist-select" style="width: 140px;">
-                    <option value="frontloaded">Frontloaded</option>
-                    <option value="average" selected>Average</option>
-                  </select>
-                </div>
-              </div>
-            </div>
+        <div class="modal-section" data-mode="override">
+          <div class="modal-section-header">
+            <label class="modal-radio">
+              <input type="radio" name="dddMode" value="override" />
+              
+            </label>
+            <span class="modal-section-sub"></span>
+          </div>
+          <div class="modal-control-row">
+            <label for="dddOverrideInput" style="margin:0;">Exact AA% Per Ult</label>
+            <input id="dddOverrideInput" type="number" min="0" step="1" value="0" style="width: 100px;" />
+          </div>
+        </div>
 
         <div class="modal-section" data-mode="future">
           <div class="modal-section-header">
@@ -1193,7 +1145,6 @@
     const dahliaToggle = document.getElementById('dahliaToggle');
     const dddSelect = document.getElementById('dddSelect');
     const dddRankSelect = document.getElementById('dddRankSelect');
-    const dddModeSelect = document.getElementById('dddModeSelect');
     const e5Toggle = document.getElementById('e5Toggle');
     const phainonSelect = document.getElementById('phainonSelect');
     const tableA = document.getElementById('tableA');
@@ -1207,8 +1158,6 @@
     const dddModalClose = document.getElementById('dddModalClose');
     const dddSelectModal = document.getElementById('dddSelectModal');
     const dddRankSelectModal = document.getElementById('dddRankSelectModal');
-    const dddModeSelectModalProcs = document.getElementById('dddModeSelectModalProcs');
-    const dddModeSelectModalOverride = document.getElementById('dddModeSelectModalOverride');
     const dddOverrideInput = document.getElementById('dddOverrideInput');
     const dddModeRadios = document.querySelectorAll('input[name="dddMode"]');
 
@@ -1357,29 +1306,8 @@
         for (let k = 1; k <= Nshare; k++) {
           times.push(delta * k);
         }
-        return times;
+        return times.filter(t => t <= T + eps);
       }
-
-      const Nshare = Math.max(0, Math.floor(baseCount + F + eps));
-      let remaining = F;
-      let last = 0;
-      const times = [0]; // EBA1 at CC start and not advanced
-      for (let k = 1; k <= Nshare; k++) {
-        const share = Math.min(1, remaining);
-        const delta = baseAVCC * (1 - share);
-        last += delta;
-        if (last <= T + eps) times.push(last);
-        remaining = Math.max(0, remaining - share);
-      }
-      return times;
-    }
-
-    // Entrypoint: choose average vs front-loaded distribution.
-    function getEbaTimes(baseAVCC, totalAAFrac, includeFirstInShare) {
-      if (useFrontLoadedDDD()) {
-        return getEbaTimesFrontLoaded(baseAVCC, totalAAFrac, includeFirstInShare);
-      }
-      return getEbaTimesAverage(baseAVCC, totalAAFrac, includeFirstInShare);
     }
 
     function addAaRow(body) {
@@ -1514,57 +1442,14 @@
 
       return rows.filter(r => r.av <= MAX_AV + 1);
     }
-
-    // Sync all distribution dropdowns and optionally recalc.
-    function setDddDistributionMode(mode, shouldRecalc = true, markManual = false) {
-      const val = mode === 'frontloaded' ? 'frontloaded' : 'average';
-      dddDistributionMode = val;
-      if (markManual) dddDistributionManual = true;
-      [dddModeSelect, dddModeSelectModalProcs, dddModeSelectModalOverride].forEach(sel => {
-        if (sel && sel.value !== val) sel.value = val;
-      });
-      if (shouldRecalc) calculate();
-    }
-
-    function maybeAutoSetDistributionFromProcs(procsVal) {
-      if (dddDistributionManual) return;
-      let v = procsVal;
-      if (typeof v !== 'number') {
-        v = parseInt((dddSelect && dddSelect.value) || (dddSelectModal && dddSelectModal.value) || '', 10);
-      }
-      if (isNaN(v)) return;
-      if (v === 1 || v === 2) {
-        setDddDistributionMode('frontloaded');
-      } else if (v >= 3) {
-        setDddDistributionMode('average');
-      }
-    }
-
-    function maybeAutoSetDistributionFromOverride(pctVal) {
-      if (dddDistributionManual) return;
-      let p = pctVal;
-      if (typeof p !== 'number') {
-        p = parseFloat((dddOverrideInput && dddOverrideInput.value) || '');
-      }
-      if (isNaN(p)) return;
-      if (p < 50) {
-        setDddDistributionMode('frontloaded');
-      } else if (p > 50) {
-        setDddDistributionMode('average');
-      }
-    }
     function syncDddModalFromMain() {
       if (dddSelectModal && dddSelect) dddSelectModal.value = dddSelect.value;
       if (dddRankSelectModal && dddRankSelect) dddRankSelectModal.value = dddRankSelect.value;
-      const modeVal = dddModeSelect ? dddModeSelect.value : dddDistributionMode;
-      setDddDistributionMode(modeVal, false);
     }
 
     function syncMainFromDddModal() {
       if (dddSelect && dddSelectModal) dddSelect.value = dddSelectModal.value;
       if (dddRankSelect && dddRankSelectModal) dddRankSelect.value = dddRankSelectModal.value;
-      const modeVal = dddModeSelectModalProcs ? dddModeSelectModalProcs.value : dddDistributionMode;
-      setDddDistributionMode(modeVal, false);
     }
 
     function refreshDddSectionStates() {
@@ -2104,7 +1989,6 @@
     dddSelect.addEventListener('change', () => {
       setDddMode('procs');
       if (dddSelectModal) dddSelectModal.value = dddSelect.value;
-      maybeAutoSetDistributionFromProcs(parseInt(dddSelect.value, 10));
       calculate();
     });
     dddRankSelect.addEventListener('change', () => {
@@ -2112,11 +1996,6 @@
       if (dddRankSelectModal) dddRankSelectModal.value = dddRankSelect.value;
       calculate();
     });
-    if (dddModeSelect) {
-      dddModeSelect.addEventListener('change', () => {
-        setDddDistributionMode(dddModeSelect.value, true, true);
-      });
-    }
     e5Toggle.addEventListener('change', calculate);
     phainonSelect.addEventListener('change', calculate);
 
@@ -2163,7 +2042,6 @@
       dddSelectModal.addEventListener('change', () => {
         setDddMode('procs');
         syncMainFromDddModal();
-        maybeAutoSetDistributionFromProcs(parseInt(dddSelectModal.value, 10));
         calculate();
       });
     }
@@ -2174,20 +2052,9 @@
         calculate();
       });
     }
-    if (dddModeSelectModalProcs) {
-      dddModeSelectModalProcs.addEventListener('change', () => {
-        setDddDistributionMode(dddModeSelectModalProcs.value, true, true);
-      });
-    }
-    if (dddModeSelectModalOverride) {
-      dddModeSelectModalOverride.addEventListener('change', () => {
-        setDddDistributionMode(dddModeSelectModalOverride.value, true, true);
-      });
-    }
     if (dddOverrideInput) {
       dddOverrideInput.addEventListener('input', () => {
         setDddMode('override');
-        maybeAutoSetDistributionFromOverride(parseFloat(dddOverrideInput.value));
         calculate();
       });
     }
@@ -2239,16 +2106,10 @@
     }
 
     ensureAaInitialRows();
-    // Initialize distribution mode from main dropdown (or default).
-    setDddDistributionMode(dddModeSelect ? dddModeSelect.value : dddDistributionMode, false);
-    // Apply auto defaults based on current proc/override settings, unless user overrides later.
-    maybeAutoSetDistributionFromProcs();
-    maybeAutoSetDistributionFromOverride();
     calculate();
     applyPinState();
     syncDddModalFromMain();
     refreshDddSectionStates();
   </script>
 </body>
-
 </html>
