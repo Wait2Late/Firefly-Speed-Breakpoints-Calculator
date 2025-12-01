@@ -987,7 +987,7 @@
         <span class="pill">AV vs sheet SPD</span>
       </div>
         <div class="card-sub">
-          Choose target AVs and a sheet SPD range. Each table shows which SPD bands give different EBA / Skill patterns before that AV.
+          Choose target AVs and a sheet SPD range. Each table shows which SPD bands give different E.Skill / Skill patterns before that AV.
         </div>
         <div class="controls" style="margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; flex-direction: row;">
           <div class="control-group inv-target" style="flex: 0 0 200px;">
@@ -1029,7 +1029,7 @@
             <thead>
               <tr>
                 <th>Out of combat SPD</th>
-                <th>Total EBA / Skill</th>
+                <th>Total E.Skill / Skill</th>
                 <th>Pattern up to target AV</th>
               </tr>
             </thead>
@@ -1045,7 +1045,7 @@
             <thead>
               <tr>
                 <th>Out of combat SPD</th>
-                <th>Total EBA / Skill</th>
+                <th>Total E.Skill / Skill</th>
                 <th>Pattern up to target AV</th>
               </tr>
             </thead>
@@ -1062,9 +1062,9 @@
         <div>
           <div class="modal-title">Advanced DDD Settings</div>
           <div class="modal-sub">
-            The % Action Advance is used to calculate how many EBA's will occur during CC. By default, 1 or 2 proc's of DDD (or sub 50% if you specify) will be Frontloaded during the ult (advances the first possible EBA), while higher amounts of AA defaults to Averaging out the AA over all EBA's. You can override this.
+            The % Action Advance is used to calculate how many E.Skill's will occur during CC. By default, 1 or 2 proc's of DDD (or sub 50% if you specify) will be Frontloaded during the ult (advances the first possible E.Skill), while higher amounts of AA defaults to Averaging out the AA over all E.Skill's. You can override this.
             <br /><br />
-            For Average, the AA is evenly split over all applicable EBA's. For example, 5 S5 DDD proc's gives 120% AA. If it results in 4 EBA's that can be advanced, each of them will be treated as if they had 120% / 4 = 30% AA. This assumes all DDD proc's are not wasted and are used during CC only. You can either use the DDD presets, or input in exact AA for your use case. For example Dahlia E6 is 20%.
+            For Average, the AA is evenly split over all applicable E.Skill's. For example, 5 S5 DDD proc's gives 120% AA. If it results in 4 E.Skill's that can be advanced, each of them will be treated as if they had 120% / 4 = 30% AA. This assumes all DDD proc's are not wasted and are used during CC only. You can either use the DDD presets, or input in exact AA for your use case. For example Dahlia E6 is 20%.
           </div>
         </div>
         <button class="modal-close" id="dddModalClose" type="button">Close</button>
@@ -1359,7 +1359,7 @@
       }
 
       const Nshare = Math.max(0, Math.floor(baseCount + F + eps));
-      const times = [0]; // EBA1 at CC start
+      const times = [0]; // E.Skill1 at CC start
       if (Nshare === 0) return times;
       const perShare = F / Nshare;
       const delta = baseAVCC * (1 - perShare);
@@ -1369,7 +1369,7 @@
       return times.filter(t => t <= T + eps);
     }
 
-    // Front-loaded AA distribution: spend AA on the earliest eligible EBAs, up to 100% per EBA.
+    // Front-loaded AA distribution: spend AA on the earliest eligible E.Skills, up to 100% per E.Skill.
     function getEbaTimesFrontLoaded(baseAVCC, totalAAFrac, includeFirstInShare) {
       const T = CC_TIMER_AV;
       const eps = 1e-6;
@@ -1395,7 +1395,7 @@
       const Nshare = Math.max(0, Math.floor(baseCount + F + eps));
       let remaining = F;
       let last = 0;
-      const times = [0]; // EBA1 at CC start and not advanced
+      const times = [0]; // E.Skill1 at CC start and not advanced
       for (let k = 1; k <= Nshare; k++) {
         const share = Math.min(1, remaining);
         const delta = baseAVCC * (1 - share);
@@ -1520,10 +1520,10 @@
           }
           if (ebaInCycle === 0) {
             ebaInCycle = 1;
-            rows.push(buildRow(idx++, 'EBA 1', t, 'event-eba', hit));
+            rows.push(buildRow(idx++, 'E.Skill 1', t, 'event-eba', hit));
           } else {
             ebaInCycle++;
-            rows.push(buildRow(idx++, `EBA ${ebaInCycle}`, t, 'event-eba', hit));
+            rows.push(buildRow(idx++, `E.Skill ${ebaInCycle}`, t, 'event-eba', hit));
           }
           need = baseAVCC;
         } else {
@@ -1533,12 +1533,12 @@
             : `Skill ${skillIndex} (post-CC)`;
           rows.push(buildRow(idx++, label, t, 'event-skill', hit));
 
-          // Start CC immediately and log Ult & EBA1 at the same AV.
+          // Start CC immediately and log Ult & E.Skill1 at the same AV.
           cycle += 1;
           inCC = true;
           ebaInCycle = 0;
           ccEnd = t + CC_TIMER_AV;
-          rows.push(buildRow(idx++, `Ult & EBA 1 (ult ${cycle})`, t, 'event-ult', hit));
+          rows.push(buildRow(idx++, `Ult & E.Skill 1 (ult ${cycle})`, t, 'event-ult', hit));
           ebaInCycle = 1;
           need = baseAVCC;
         }
@@ -1646,7 +1646,7 @@
 
     function describePattern(events, targetAv) {
       if (!events.length) {
-        return `No EBA / Skill before AV ${fmt(targetAv)}`;
+        return `No E.Skill / Skill before AV ${fmt(targetAv)}`;
       }
       const groups = [];
       let last = events[0];
@@ -1665,7 +1665,7 @@
       return groups
         .map(g => {
           if (g.type === 'E') {
-            return `${g.count} EBA`;
+            return `${g.count} E.Skill`;
           }
           return `${g.count} Skill`;
         })
@@ -1700,7 +1700,7 @@
         lastCCActionAv = at;
       });
 
-      if (!lastCCActionAv) return events; // no EBAs fit
+      if (!lastCCActionAv) return events; // no E.Skills fit
 
       let passed = ccEnd - lastCCActionAv;
       let remainingOld = Math.max(0, baseAVCC - passed);
@@ -1718,7 +1718,7 @@
         const ccEndLoop = ccStartLoop + CC_TIMER_AV;
 
         if (ccStartLoop <= targetAv + eps) {
-          events.push('E'); // Ult & EBA 1
+          events.push('E'); // Ult & E.Skill 1
         } else {
           break;
         }
@@ -1772,7 +1772,7 @@
       // First CC cycle
       let ccStart = skill1Av;
       let ccEnd = ccStart + CC_TIMER_AV;
-      if (ccStart <= targetAv + eps) events.push('E'); // Ult & EBA 1
+      if (ccStart <= targetAv + eps) events.push('E'); // Ult & E.Skill 1
 
       const ebaTimesFirst = getEbaTimes(baseAVCC, totalAA, false);
       let lastCCActionAv = ccStart;
@@ -1798,7 +1798,7 @@
         const ccEndLoop = ccStartLoop + CC_TIMER_AV;
 
         if (ccStartLoop <= targetAv + eps) {
-          events.push('E'); // Ult & EBA 1
+          events.push('E'); // Ult & E.Skill 1
         } else {
           break;
         }
@@ -1914,7 +1914,7 @@
         .map((r, idx) => `
           <tr>
             <td class="av-col">${formatRange(r, maxSpd)}</td>
-            <td>${r.eCount} EBA / ${r.nCount} Skill</td>
+            <td>${r.eCount} E.Skill / ${r.nCount} Skill</td>
             <td>${r.pattern}</td>
           </tr>
         `)
@@ -1924,7 +1924,7 @@
         .map((r, idx) => `
           <tr>
             <td class="av-col">${formatRange(r, maxSpd)}</td>
-            <td>${r.eCount} EBA / ${r.nCount} Skill</td>
+            <td>${r.eCount} E.Skill / ${r.nCount} Skill</td>
             <td>${r.pattern}</td>
           </tr>
         `)
@@ -1987,7 +1987,7 @@
         let lastCCActionAv = 0;
         ebaTimesFirst.forEach((t, i) => {
           const at = ccStart + t;
-          rowsA.push(buildRow(idxA++, `EBA ${i + 1}`, at, 'event-eba'));
+          rowsA.push(buildRow(idxA++, `E.Skill ${i + 1}`, at, 'event-eba'));
           lastCCActionAv = at;
         });
         rowsA.push(buildRow(idxA++, 'CC ends', ccEnd, 'event-cc'));
@@ -2008,7 +2008,7 @@
         let loopSkillTimeA = postCCSkillTimeA;
 
         while (loopSkillTimeA != null) {
-          rowsA.push(buildRow(idxA++, `Ult & EBA 1 (ult ${cycleA})`, loopSkillTimeA, 'event-ult'));
+          rowsA.push(buildRow(idxA++, `Ult & E.Skill 1 (ult ${cycleA})`, loopSkillTimeA, 'event-ult'));
 
           ccStart = loopSkillTimeA;
           ccEnd = ccStart + CC_TIMER_AV;
@@ -2017,7 +2017,7 @@
           let lastCCActionAvLoop = ccStart;
           for (let j = 1; j < ebaTimesLoop.length; j++) {
             const at = ccStart + ebaTimesLoop[j];
-            rowsA.push(buildRow(idxA++, `EBA ${j + 1}`, at, 'event-eba'));
+            rowsA.push(buildRow(idxA++, `E.Skill ${j + 1}`, at, 'event-eba'));
             lastCCActionAvLoop = at;
           }
           rowsA.push(buildRow(idxA++, 'CC ends', ccEnd, 'event-cc'));
@@ -2048,13 +2048,13 @@
 
         let ccStartB = skill1Av;
         let ccEndB = ccStartB + CC_TIMER_AV;
-        rowsB.push(buildRow(idxB++, 'Ult & EBA 1 (ult 1)', ccStartB, 'event-ult'));
+        rowsB.push(buildRow(idxB++, 'Ult & E.Skill 1 (ult 1)', ccStartB, 'event-ult'));
 
         const ebaTimesFirstB = getEbaTimes(baseAVCC, totalAA, false);
         let lastCCActionAvB = ccStartB;
         for (let j = 1; j < ebaTimesFirstB.length; j++) {
           const at = ccStartB + ebaTimesFirstB[j];
-          rowsB.push(buildRow(idxB++, `EBA ${j + 1}`, at, 'event-eba'));
+          rowsB.push(buildRow(idxB++, `E.Skill ${j + 1}`, at, 'event-eba'));
           lastCCActionAvB = at;
         }
         rowsB.push(buildRow(idxB++, 'CC ends', ccEndB, 'event-cc'));
@@ -2074,7 +2074,7 @@
         let loopSkillTimeB = postCCSkillTimeB;
 
         while (loopSkillTimeB != null) {
-          rowsB.push(buildRow(idxB++, `Ult & EBA 1 (ult ${cycleB})`, loopSkillTimeB, 'event-ult'));
+          rowsB.push(buildRow(idxB++, `Ult & E.Skill 1 (ult ${cycleB})`, loopSkillTimeB, 'event-ult'));
 
           ccStartB = loopSkillTimeB;
           ccEndB = ccStartB + CC_TIMER_AV;
@@ -2083,7 +2083,7 @@
           let lastCCActionAvLoopB = ccStartB;
           for (let j = 1; j < ebaTimesLoopB.length; j++) {
             const at = ccStartB + ebaTimesLoopB[j];
-            rowsB.push(buildRow(idxB++, `EBA ${j + 1}`, at, 'event-eba'));
+            rowsB.push(buildRow(idxB++, `E.Skill ${j + 1}`, at, 'event-eba'));
             lastCCActionAvLoopB = at;
           }
           rowsB.push(buildRow(idxB++, 'CC ends', ccEndB, 'event-cc'));
